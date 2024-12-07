@@ -47,14 +47,14 @@ public class MainController {
         return "delivery";
     }
 
-    @GetMapping("/donations")
-    public String donations() {
-        return "donations";
+    @GetMapping("/donation")
+    public String donation() {
+        return "donation";
     }
 
-    @GetMapping("/supervise")
-    public String supervise() {
-        return "supervise";
+    @GetMapping("/supervising")
+    public String supervising() {
+        return "supervising";
     }
 
     @GetMapping("/manager")
@@ -77,5 +77,15 @@ public class MainController {
         model.addAttribute("volunteerContributions", analyticsService.getVolunteerContributions());
         model.addAttribute("processingTime", analyticsService.getAverageProcessingTime());
         return "analytics";
+    }
+
+    @GetMapping("/range")
+    public String range() {
+        return "range";
+    }
+  
+    @GetMapping("/search-order")
+    public String getSearchOrder() {
+        return "search-order";
     }
 }
