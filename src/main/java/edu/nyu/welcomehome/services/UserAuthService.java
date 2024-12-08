@@ -1,6 +1,5 @@
 package edu.nyu.welcomehome.services;
 
-import edu.nyu.welcomehome.models.RoleType;
 import edu.nyu.welcomehome.models.request.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -59,7 +58,7 @@ public class UserAuthService {
         byte[] hashedPasswordBytes = md.digest(password.getBytes());
         return Base64.getEncoder().encodeToString(hashedPasswordBytes);
     }
-
+    
     public void saveUserAsCustomer(RegisterRequest request) throws NoSuchAlgorithmException {
         List<String> roleTypes = new ArrayList<>();
         roleTypes.add("BORROWER");
