@@ -23,12 +23,12 @@ public class UserAuthService {
     }
 
     public boolean isAuthorizedAsStaff(String username, String password) {
-        String sqlFilePath = "sql/volunteer-login.sql";
+        String sqlFilePath = "sql/auth/volunteer-login.sql";
         return isAuthorizedUser(username, password, sqlFilePath);
     }
 
     public boolean isAuthorizedAsCustomer(String username, String password) {
-        String sqlFilePath = "sql/customer-login.sql";
+        String sqlFilePath = "sql/auth/customer-login.sql";
         return isAuthorizedUser(username, password, sqlFilePath);
     }
 
@@ -58,7 +58,7 @@ public class UserAuthService {
         byte[] hashedPasswordBytes = md.digest(password.getBytes());
         return Base64.getEncoder().encodeToString(hashedPasswordBytes);
     }
-    
+
     public void saveUserAsCustomer(RegisterRequest request) throws NoSuchAlgorithmException {
         List<String> roleTypes = new ArrayList<>();
         roleTypes.add("BORROWER");
@@ -83,17 +83,17 @@ public class UserAuthService {
         params.put("lastName", request.lastName());
         params.put("email", request.email());
 
-        String query = loadSqlFromFile("sql/register.sql", params);
+        String query = loadSqlFromFile("sql/auth/register.sql", params);
         logger.info("The query parsed is: " + query);
         jdbcTemplate.update(query);
 
         roleTypes.forEach(role -> {
             params.put("roleID", role);
-            String queryToGetRoleID = loadSqlFromFile("sql/selectRoleID.sql", params);
+            String queryToGetRoleID = loadSqlFromFile("sql/auth/selectRoleID.sql", params);
             logger.info("The query parsed is: " + queryToGetRoleID);
             String roleID = jdbcTemplate.queryForObject(queryToGetRoleID, String.class);
             if (roleID != null) {
-                String queryToSaveUserEnrolledRoles = loadSqlFromFile("sql/role.sql", params);
+                String queryToSaveUserEnrolledRoles = loadSqlFromFile("sql/auth/role.sql", params);
                 logger.info("The query parsed is: " + queryToSaveUserEnrolledRoles);
                 jdbcTemplate.update(queryToSaveUserEnrolledRoles);
                 System.out.println(roleID+" Completed");
